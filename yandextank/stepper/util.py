@@ -11,8 +11,8 @@ from .module_exceptions import StepperConfigurationError
 logging.getLogger("requests").setLevel(logging.WARNING)
 
 
-def take(number, iter):
-    return list(islice(iter, 0, number))
+def take(number, iterable):
+    return list(islice(iterable, 0, number))
 
 
 def parse_duration(duration):
