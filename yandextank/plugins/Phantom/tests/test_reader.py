@@ -1,3 +1,5 @@
+from functools import reduce
+
 import pandas as pd
 
 from yandextank.plugins.Phantom.reader import PhantomReader, PhantomStatsReader

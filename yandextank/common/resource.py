@@ -18,7 +18,7 @@ class FormatDetector(object):
         self.formats = {'gzip': (0, b'\x1f\x8b'), 'tar': (257, b'ustar\x0000')}
 
     def detect_format(self, header):
-        for fmt, signature in self.formats.iteritems():
+        for fmt, signature in self.formats.items():
             if signature[1] == header[signature[0]:len(signature[1])]:
                 return fmt
 

@@ -1,9 +1,11 @@
 import argparse
-from types import NoneType
-
 import imp
+from itertools import chain
+
 import yaml
 from yaml.scanner import ScannerError
+
+NoneType = type(None)
 
 TYPE = 'type'
 LIST = 'list'
@@ -252,8 +254,9 @@ def render_body(renderer, option_kwargs, exclude_keys, special_keys=None):
     special_part = '\n'.join([special_handler(renderer, option_kwargs[special_key])
                               for special_key, special_handler in special_keys.items()
                               if special_key in option_kwargs])
+    all_keys = list(chain(exclude_keys, special_keys.keys()))
     common_part = renderer.field_list({k: common_formatters.get(k, default_fmt)(v) for k, v in option_kwargs.items()
-                                       if k not in exclude_keys + special_keys.keys()})
+                                       if k not in all_keys})
 
     return '\n'.join([_ for _ in [common_part, special_part] if _])
 
@@ -283,7 +286,7 @@ class OptionFormatter(object):
 
         :type option_schema: dict
         """
-        self.option_name, self.option_kwargs = option_schema.items()[0]
+        self.option_name, self.option_kwargs = list(option_schema.items())[0]
         # print(option_name, option_kwargs)
         self.formatter = self.__guess_formatter()
 

@@ -37,7 +37,7 @@ class Plugin(AbstractPlugin):
         self.device_id = self.get_option("device_id", None).strip()
         if self.device_id:
             modify = '-s {device_id}'.format(device_id=self.device_id)
-            for key, value in self.cmds.iteritems():
+            for key, value in self.cmds.items():
                 self.cmds[key] = value % modify
             self.logfile = self.core.mkstemp(".log", "battery_historian_")
             self.core.add_artifact_file(self.logfile)

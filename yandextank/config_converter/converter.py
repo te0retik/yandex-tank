@@ -1,7 +1,7 @@
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 import re
 import logging
-from itertools import ifilter
+from itertools import chain
 
 import pkg_resources
 import yaml
@@ -247,7 +247,7 @@ class Option(object):
         :rtype: (str, object)
         """
         if self._as_tuple is None:
-            self._as_tuple = next(self.converted.iteritems())
+            self._as_tuple = next(self.converted.items())
         return self._as_tuple
 
     @property
@@ -320,7 +320,7 @@ class Section(object):
         if len(sections) == 1:
             return sections[0]
         if parent_name:
-            master_section = next(ifilter(lambda section: section.name == parent_name, sections))
+            master_section = next(filter(lambda section: section.name == parent_name, sections))
             rest = filter(lambda section: section.name != parent_name, sections)
         else:
             master_section = sections[0]
@@ -339,7 +339,7 @@ class Section(object):
         MAP = {
             'bfg': lambda section: section.name == '{}_gun'.format(master_section.get_cfg_dict()['gun_type'])
         }
-        return next(ifilter(MAP.get(master_section.name, lambda x: True), rest))
+        return next(filter(MAP.get(master_section.name, lambda x: True), rest))
         # return filter(lambda section: section.name == MAP.get(master_section.name, ), rest)[0]
 
 
@@ -437,7 +437,7 @@ def enable_sections(sections, core_opts):
             disabled_instances.pop(section.name)
     # add leftovers
     for plugin_instance in [i for i in plugin_instances if
-                            i.section_name in enabled_instances.keys() + disabled_instances.keys()]:
+                            i.section_name in chain(enabled_instances.keys(), disabled_instances.keys())]:
         sections.append(Section(plugin_instance.section_name, plugin_instance.plugin_name, [], plugin_instance.enabled))
     return sections
 

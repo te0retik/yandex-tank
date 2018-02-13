@@ -29,7 +29,7 @@ class ExpVar(object):
         return self.variables[name]
 
     def get_dict(self):
-        return {k: v.get() for k, v in self.variables.iteritems()}
+        return {k: v.get() for k, v in self.variables.items()}
 
 
 class Var(object):

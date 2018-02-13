@@ -1,5 +1,5 @@
 """ Provides classes to run TankCore from console environment """
-from ConfigParser import ConfigParser, MissingSectionHeaderError, NoOptionError, NoSectionError
+from configparser import ConfigParser, MissingSectionHeaderError, NoOptionError, NoSectionError
 import datetime
 import fnmatch
 import glob
@@ -414,7 +414,7 @@ class ConsoleTank:
                 self.log.info("Time has come: %s", datetime.datetime.now())
 
             if self.options.manual_start:
-                raw_input("Press Enter key to start test:")
+                input("Press Enter key to start test:")
 
             self.core.plugins_start_test()
             retcode = self.core.wait_for_finish()
